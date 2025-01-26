@@ -49,9 +49,10 @@ class MachineHome extends StatefulWidget{
 
 class MachineHomeState extends State<MachineHome>{
   List<List<bool>> bottles; // from above, fixed
-  List<Bottle> num_buttons = [];
-  
+
   Column cans = Column(children:<Row>[]);
+  Column int_button_inputs = Column(children:<Row>[]);
+  Column char_button_inputs = Column(children:<Row>[]);
 
   MachineHomeState(this.bottles);
 
@@ -68,26 +69,31 @@ class MachineHomeState extends State<MachineHome>{
       }
       cans.children.add(r);
     }
+
+
   }
 
   return Scaffold
   ( 
-    appBar: AppBar(title: Text("Coke Machine")),
-    body: Column
-    ( 
-      children:
-      [ cans, // This is the grid of letters to click on.
-
-      FloatingActionButton(
-        onPressed: (){ 
-          setState( 
-            (){   
-              
-            }
-          );
-        },
-        child: Text("Buy", style:TextStyle(fontSize:20),),
+    appBar: AppBar(
+      title: Text("Coke Machine")
       ),
+    body: Column( 
+      children: [ 
+        cans, // This is the grid of letters to click on.
+        int_button_inputs,
+        char_button_inputs,
+
+        FloatingActionButton(
+          onPressed: (){ 
+            setState( 
+              (){   
+                
+              }
+            );
+          },
+          child: Text("Buy", style:TextStyle(fontSize:20),),
+        ),
       ],
     ),
   );
@@ -97,24 +103,22 @@ class MachineHomeState extends State<MachineHome>{
 
 // FaceUp is a single letter in a box on the screen.
 // If you click on it, it highlights.
-class Bottle extends StatefulWidget
-{
-  MachineHomeState mhs; // This is the state of the enclosing app.
-                       // We have to pass it down through the constructors
-                       // so that a single letter can add itself to the word.
-  BottleState? bs;
+class Btn extends StatefulWidget{
+  bool input = false;
+  MachineHomeState mhs;
+  BtnState? bs;
 
-  Bottle({required this.mhs});
+  Btn({required this.mhs});
 
-  State<Bottle> createState() => (bs = BottleState(mhs:mhs));
+  State<Btn> createState() => (bs = BtnState(mhs:mhs));
 }
 
-class BottleState extends State<Bottle>
+class BtnState extends State<Btn>
 {
   MachineHomeState mhs; // And passed down again ... so we can add to the word.
   bool picked = false; // black border if picked.
                        // We should probably also disallow picking again.  Whatever.
-  BottleState({required this.mhs});
+  BtnState({required this.mhs});
 
   @override
   Widget build(BuildContext context ){ 
