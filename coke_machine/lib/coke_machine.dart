@@ -28,7 +28,7 @@ List<List<bool>> retList = List.generate(
   5, // Number of rows
   (_) => List.generate(
     5, // Number of columns
-    (_) => false, // Default value
+    (_) => true, // Default value
   ),
 );
   return retList;
@@ -117,6 +117,7 @@ class MachineHomeState extends State<MachineHome> {
                 for (int r = 0; r < 5; r++) {
                   if (rowButtonKeys[r].currentState?.mState == true) {
                     selectedRow = r;
+                    rowButtonKeys[r].currentState?.mState = false;
                   }
                 }
 
@@ -124,6 +125,7 @@ class MachineHomeState extends State<MachineHome> {
                 for (int c = 0; c < 5; c++) {
                   if (colButtonKeys[c].currentState?.mState == true) {
                     selectedCol = c;
+                    colButtonKeys[c].currentState?.mState = false;
                   }
                 }
 
