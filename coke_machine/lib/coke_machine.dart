@@ -1,10 +1,4 @@
-// Barrett Koster 2025
-// Boggle (more or less?)
-// It shuffles a grid of letter-cubes and lets you make
-// words by clicking on letters, then hit 'done' to 
-// end word.
-
-import "dart:math";
+// Asher Holtham
 import "package:flutter/material.dart";
 
 void main(){ 
@@ -192,7 +186,7 @@ class BtnState extends State<Btn> {
         mType,
         style: TextStyle(
           fontSize: 15, 
-          backgroundColor: mState? Color(0xff000000): Color(0xff00ff00),
+          color: mState? Color(0xff000000): Color(0xff00ff00),
         )),
       );
   }
