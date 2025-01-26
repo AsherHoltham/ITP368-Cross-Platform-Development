@@ -33,11 +33,6 @@ List<List<bool>> fill(){
   return retList;
 }
 
-
-
-
-
-
 class MachineHome extends StatefulWidget{
   List<List<bool>> bottles;
 
@@ -51,8 +46,8 @@ class MachineHomeState extends State<MachineHome>{
   List<List<bool>> bottles; // from above, fixed
 
   Column cans = Column(children:<Row>[]);
-  Row int_button_inputs = Row(children:<Btn>[]);
-  Row char_button_inputs = Row(children:<Btn>[]);
+  Row rowButtonInputs = Row(children:<Btn>[]);
+  Row colButtonInputs = Row(children:<Btn>[]);
 
   MachineHomeState(this.bottles);
 
@@ -71,79 +66,106 @@ class MachineHomeState extends State<MachineHome>{
       }
       cans.children.add(r);
     }
+
     for(int i = 0; i < 5; i++){
-      Btn btn = Btn("$i", 0, mhs:this);
-      int_button_inputs.children.add(btn);
+      Btn btn = Btn("$i", false, mhs:this);
+      rowButtonInputs.children.add(btn);
     }
-  }
 
-  return Scaffold( 
-    appBar: AppBar(
-      title: Text("Coke Machine")
-      ),
-    body: Column( 
-      children: [ 
-        cans, // This is the grid of letters to click on.
-        int_button_inputs,
-        char_button_inputs,
+    List<String> btnVars = ['A', 'B', 'C', 'D', 'E'];
+    for(int i = 0; i < 5; i++){
+      Btn btn = Btn(btnVars[i], false, mhs:this);
+      colButtonInputs.children.add(btn);
+    }
 
-        FloatingActionButton(
-          onPressed: (){ 
-            setState( 
-              (){   
-                
-              }
-            );
-          },
-          child: Text("Buy", style: TextStyle(fontSize:20),),
+    return Scaffold( 
+      appBar: AppBar(
+        title: Text("Coke Machine")
         ),
-      ],
-    ),
-  );
+      body: Column( 
+        children: [ 
+          cans, // This is the grid of letters to click on.
+          rowButtonInputs,
+          colButtonInputs,
+
+          FloatingActionButton(
+            onPressed: (){ 
+              setState( 
+                (){
+                  int row = 5;
+                  int col = 5;
+                  for(int r = 0; r < 5; r++){
+                    if(rowButtonInputs.children[r].mState == true){
+                      row = r;
+                    }
+                  }
+                  for(int c = 0; c < 5; c++){
+                    if(colButtonInputs.children[c].mState == true){
+                      col = c;
+                    }
+                  }
+                  if( row != 5 && col != 5){
+                    bottles[row][col] = false;
+                  }
+                }
+              );
+            },
+            child: Text("Buy", style: TextStyle(fontSize:20),),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 
 
 // FaceUp is a single letter in a box on the screen.
 // If you click on it, it highlights.
-class Btn extends StatefulWidget{
+class Btn extends StatefulWidget {
   final String mType;
-  bool mInput;
-  MachineHomeState mhs;
-  BtnState? bs;
+  final bool initialState;
+  final MachineHomeState mhs;
+  final GlobalKey<BtnState> btnKey;
 
-  Btn(String type, bool input, {required this.mhs}): mType = type, mInput = input;
-
-  State<Btn> createState() => (bs = BtnState(mType, mInput, mhs:mhs));
-}
-
-class BtnState extends State<Btn>{
-  String mType;
-  bool mInput;
-  MachineHomeState mhs;
-
-  BtnState(String type, bool input, {required this.mhs}): mType = type, mInput = input;
+  Btn({
+    required this.mType,
+    required this.initialState,
+    required this.mhs,
+    required this.btnKey,
+  }) : super(key: btnKey);
 
   @override
-  Widget build(BuildContext context ){ 
-    return 
-    FloatingActionButton(
-      onPressed: (){
-        setState( 
-          (){   
-            if(mInput == true){
-              mInput = false;
-            } else {
-              mInput = true;
-            }
-          }
-        );
-      },
+  BtnState createState() => BtnState();
+}
+
+class BtnState extends State<Btn> {
+  late String mType;
+  late bool mState;
+  late MachineHomeState mhs;
+
+  @override
+  void initState() {
+    super.initState();
+    mType = widget.mType;
+    mState = widget.initialState;
+    mhs = widget.mhs;
+  }
+
+  void toggleState() {
+    setState(() {
+      mState = !mState;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: toggleState,
       child: Text(
-        mType, style: TextStyle(
-          fontSize:15
-        ),
-      )
+        mType,
+        style: const TextStyle(fontSize: 15),
+      ),
     );
   }
 }
