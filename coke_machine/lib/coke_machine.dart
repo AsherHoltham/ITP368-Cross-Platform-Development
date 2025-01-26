@@ -24,12 +24,13 @@ class Machine extends StatelessWidget {
 }
 
 List<List<bool>> fill(){
-  List<List<bool>> retList = [];
-  for(int i = 0; i < 5; i++){
-    for(int j = 0; j < 5; j++){
-      retList[i].add(true);
-    }
-  }
+List<List<bool>> retList = List.generate(
+  5, // Number of rows
+  (_) => List.generate(
+    5, // Number of columns
+    (_) => false, // Default value
+  ),
+);
   return retList;
 }
 
@@ -78,8 +79,8 @@ class MachineHomeState extends State<MachineHome> {
     List<Widget> rowButtons = List.generate(
       5,
       (index) => Btn(
-        "$index",
-        false,
+        mType: "$index",
+        mState: false,
         mhs: this,
         btnKey: rowButtonKeys[index],
       ),
@@ -90,8 +91,8 @@ class MachineHomeState extends State<MachineHome> {
     List<Widget> colButtons = List.generate(
       5,
       (index) => Btn(
-        btnVars[index],
-        false,
+        mType: btnVars[index],
+        mState: false,
         mhs: this,
         btnKey: colButtonKeys[index],
       ),
@@ -143,20 +144,17 @@ class MachineHomeState extends State<MachineHome> {
   }
 }
 
-
-
-
 // FaceUp is a single letter in a box on the screen.
 // If you click on it, it highlights.
 class Btn extends StatefulWidget {
   final String mType;
-  final bool initialState;
+  final bool mState;
   final MachineHomeState mhs;
   final GlobalKey<BtnState> btnKey;
 
   Btn({
     required this.mType,
-    required this.initialState,
+    required this.mState,
     required this.mhs,
     required this.btnKey,
   }) : super(key: btnKey);
@@ -174,7 +172,7 @@ class BtnState extends State<Btn> {
   void initState() {
     super.initState();
     mType = widget.mType;
-    mState = widget.initialState;
+    mState = widget.mState;
     mhs = widget.mhs;
   }
 
@@ -190,8 +188,10 @@ class BtnState extends State<Btn> {
       onPressed: toggleState,
       child: Text(
         mType,
-        style: const TextStyle(fontSize: 15),
-      ),
-    );
+        style: TextStyle(
+          fontSize: 15, 
+          backgroundColor: mState? Color(0xff000000): Color(0xff00ff00),
+        )),
+      );
   }
 }
