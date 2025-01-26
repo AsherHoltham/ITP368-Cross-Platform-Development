@@ -69,12 +69,9 @@ class MachineHomeState extends State<MachineHome>{
       }
       cans.children.add(r);
     }
-
-
   }
 
-  return Scaffold
-  ( 
+  return Scaffold( 
     appBar: AppBar(
       title: Text("Coke Machine")
       ),
@@ -92,7 +89,7 @@ class MachineHomeState extends State<MachineHome>{
               }
             );
           },
-          child: Text("Buy", style:TextStyle(fontSize:20),),
+          child: Text("Buy", style: TextStyle(fontSize:20),),
         ),
       ],
     ),
@@ -104,37 +101,33 @@ class MachineHomeState extends State<MachineHome>{
 // FaceUp is a single letter in a box on the screen.
 // If you click on it, it highlights.
 class Btn extends StatefulWidget{
-  bool input = false;
+  final String mType;
+  bool mInput;
   MachineHomeState mhs;
   BtnState? bs;
 
-  Btn({required this.mhs});
+  Btn(String type, bool input, {required this.mhs}): mType = type, mInput = input;
 
   State<Btn> createState() => (bs = BtnState(mhs:mhs));
 }
 
-class BtnState extends State<Btn>
-{
+class BtnState extends State<Btn>{
   MachineHomeState mhs; // And passed down again ... so we can add to the word.
-  bool picked = false; // black border if picked.
-                       // We should probably also disallow picking again.  Whatever.
+  bool input = false;
   BtnState({required this.mhs});
 
   @override
   Widget build(BuildContext context ){ 
-    return Listener // holds Container with letter, and listens
-    ( onPointerDown: (_)
-      { setState((){picked=true;} ); 
-      }, 
-      child: Container
-      ( height: 50, width: 50,
-        decoration: BoxDecoration // changes color if picked
-        ( border: Border.all
-          ( width:2, 
-            color: picked? Color(0xff000000): Color(0xff00ff00), 
-          ),
-        ),
-      ),
+    return 
+    FloatingActionButton(
+      onPressed: (){
+        setState( 
+          (){   
+            input = true;
+          }
+        );
+      }
+      child: Text("Buy", style: TextStyle(fontSize:20),)
     );
   }
 }
