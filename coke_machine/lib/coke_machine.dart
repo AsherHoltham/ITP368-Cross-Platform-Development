@@ -51,15 +51,17 @@ class MachineHomeState extends State<MachineHome>{
   List<List<bool>> bottles; // from above, fixed
 
   Column cans = Column(children:<Row>[]);
-  Column int_button_inputs = Column(children:<Row>[]);
-  Column char_button_inputs = Column(children:<Row>[]);
+  Row int_button_inputs = Row(children:<Btn>[]);
+  Row char_button_inputs = Row(children:<Btn>[]);
 
   MachineHomeState(this.bottles);
 
   @override
   Widget build(BuildContext context){
     for(int i = 0; i < 5; i++){
-      Row r = Row(children:[]);
+      Row r = Row(
+        children:[]
+      );
       for(int j = 0; j < 5; j++){
         if(bottles[i][j] == true){
           r.children.add( /**add Full ICON */ );
@@ -68,6 +70,10 @@ class MachineHomeState extends State<MachineHome>{
         }
       }
       cans.children.add(r);
+    }
+    for(int i = 0; i < 5; i++){
+      Btn btn = Btn("$i", 0, mhs:this);
+      int_button_inputs.children.add(btn);
     }
   }
 
@@ -108,13 +114,15 @@ class Btn extends StatefulWidget{
 
   Btn(String type, bool input, {required this.mhs}): mType = type, mInput = input;
 
-  State<Btn> createState() => (bs = BtnState(mhs:mhs));
+  State<Btn> createState() => (bs = BtnState(mType, mInput, mhs:mhs));
 }
 
 class BtnState extends State<Btn>{
-  MachineHomeState mhs; // And passed down again ... so we can add to the word.
-  bool input = false;
-  BtnState({required this.mhs});
+  String mType;
+  bool mInput;
+  MachineHomeState mhs;
+
+  BtnState(String type, bool input, {required this.mhs}): mType = type, mInput = input;
 
   @override
   Widget build(BuildContext context ){ 
@@ -123,11 +131,19 @@ class BtnState extends State<Btn>{
       onPressed: (){
         setState( 
           (){   
-            input = true;
+            if(mInput == true){
+              mInput = false;
+            } else {
+              mInput = true;
+            }
           }
         );
-      }
-      child: Text("Buy", style: TextStyle(fontSize:20),)
+      },
+      child: Text(
+        mType, style: TextStyle(
+          fontSize:15
+        ),
+      )
     );
   }
 }
