@@ -42,81 +42,107 @@ class MachineHome extends StatefulWidget{
   State<MachineHome> createState() => MachineHomeState( bottles );
 }
 
-class MachineHomeState extends State<MachineHome>{
-  List<List<bool>> bottles; // from above, fixed
-
-  Column cans = Column(children:<Row>[]);
-  Row rowButtonInputs = Row(children:<Btn>[]);
-  Row colButtonInputs = Row(children:<Btn>[]);
+class MachineHomeState extends State<MachineHome> {
+  List<List<bool>> bottles;
+  List<GlobalKey<BtnState>> rowButtonKeys = [];
+  List<GlobalKey<BtnState>> colButtonKeys = [];
 
   MachineHomeState(this.bottles);
 
   @override
-  Widget build(BuildContext context){
-    for(int i = 0; i < 5; i++){
-      Row r = Row(
-        children:[]
-      );
-      for(int j = 0; j < 5; j++){
-        if(bottles[i][j] == true){
-          r.children.add( /**add Full ICON */ );
-        } else {
-          r.children.add( /**add Empty ICON */ );
-        }
+  void initState() {
+    super.initState();
+
+    // Initialize button keys for rows and columns
+    rowButtonKeys = List.generate(5, (_) => GlobalKey<BtnState>());
+    colButtonKeys = List.generate(5, (_) => GlobalKey<BtnState>());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Build the grid of bottles
+    List<Widget> gridRows = [];
+    for (int i = 0; i < 5; i++) {
+      List<Widget> rowCells = [];
+      for (int j = 0; j < 5; j++) {
+        rowCells.add(
+          bottles[i][j]
+              ? Icon(Icons.check_box, color: Colors.green) // Full icon
+              : Icon(Icons.check_box_outline_blank, color: Colors.red), // Empty icon
+        );
       }
-      cans.children.add(r);
+      gridRows.add(Row(mainAxisAlignment: MainAxisAlignment.center, children: rowCells));
     }
 
-    for(int i = 0; i < 5; i++){
-      Btn btn = Btn("$i", false, mhs:this);
-      rowButtonInputs.children.add(btn);
-    }
+    // Build row buttons
+    List<Widget> rowButtons = List.generate(
+      5,
+      (index) => Btn(
+        "$index",
+        false,
+        mhs: this,
+        btnKey: rowButtonKeys[index],
+      ),
+    );
 
+    // Build column buttons
     List<String> btnVars = ['A', 'B', 'C', 'D', 'E'];
-    for(int i = 0; i < 5; i++){
-      Btn btn = Btn(btnVars[i], false, mhs:this);
-      colButtonInputs.children.add(btn);
-    }
+    List<Widget> colButtons = List.generate(
+      5,
+      (index) => Btn(
+        btnVars[index],
+        false,
+        mhs: this,
+        btnKey: colButtonKeys[index],
+      ),
+    );
 
-    return Scaffold( 
+    return Scaffold(
       appBar: AppBar(
-        title: Text("Coke Machine")
-        ),
-      body: Column( 
-        children: [ 
-          cans, // This is the grid of letters to click on.
-          rowButtonInputs,
-          colButtonInputs,
-
+        title: Text("Coke Machine"),
+      ),
+      body: Column(
+        children: [
+          Column(children: gridRows), // Grid of bottles
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: rowButtons),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: colButtons),
           FloatingActionButton(
-            onPressed: (){ 
-              setState( 
-                (){
-                  int row = 5;
-                  int col = 5;
-                  for(int r = 0; r < 5; r++){
-                    if(rowButtonInputs.children[r].mState == true){
-                      row = r;
-                    }
-                  }
-                  for(int c = 0; c < 5; c++){
-                    if(colButtonInputs.children[c].mState == true){
-                      col = c;
-                    }
-                  }
-                  if( row != 5 && col != 5){
-                    bottles[row][col] = false;
+            onPressed: () {
+              setState(() {
+                int selectedRow = -1;
+                int selectedCol = -1;
+
+                // Determine selected row
+                for (int r = 0; r < 5; r++) {
+                  if (rowButtonKeys[r].currentState?.mState == true) {
+                    selectedRow = r;
                   }
                 }
-              );
+
+                // Determine selected column
+                for (int c = 0; c < 5; c++) {
+                  if (colButtonKeys[c].currentState?.mState == true) {
+                    selectedCol = c;
+                  }
+                }
+
+                // Update the bottle grid if valid selection
+                if (selectedRow != -1 && selectedCol != -1) {
+                  bottles[selectedRow][selectedCol] = false;
+                }
+              });
             },
-            child: Text("Buy", style: TextStyle(fontSize:20),),
+            child: Text(
+              "Buy",
+              style: TextStyle(fontSize: 20),
+            ),
           ),
         ],
       ),
     );
   }
 }
+
 
 
 
