@@ -51,8 +51,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Column(
+          
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Spacer(flex:2),
             const Text(
               'Dice output:',
             ),
@@ -60,6 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
               firstRoll ? "Roll the Die" : '$dice',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            Spacer(flex:1),
             FloatingActionButton(
               onPressed: roll,
               tooltip: 'Roll',
