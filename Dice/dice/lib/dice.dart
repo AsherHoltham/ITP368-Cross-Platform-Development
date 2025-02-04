@@ -54,20 +54,16 @@ class _MyHomePageState extends State<MyHomePage> {
           
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Spacer(flex:2),
+            Spacer(flex:1),
             const Text(
               'Dice output:',
             ),
-            Text(
-              firstRoll ? "Roll the Die" : '$dice',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            Spacer(flex:1),
             FloatingActionButton(
               onPressed: roll,
               tooltip: 'Roll',
-              child: const Icon(Icons.circle),
+              child: Text('$dice'),
             ),
+            Spacer(flex:1),
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
