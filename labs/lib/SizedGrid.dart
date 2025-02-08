@@ -7,12 +7,12 @@ class CounterState {
 }
 
 class RowCounterCubit extends Cubit<CounterState> {
-  RowCounterCubit() : super(const CounterState(0));
+  RowCounterCubit() : super(const CounterState(1));
 
   void increment() => emit(CounterState(state.count + 1));
   void decrement()
   {
-    if(state.count > 0)
+    if(state.count > 1)
     {
       emit(CounterState(state.count - 1));
     }
@@ -24,12 +24,12 @@ class RowCounterCubit extends Cubit<CounterState> {
 }
 
 class ColCounterCubit extends Cubit<CounterState> {
-  ColCounterCubit() : super(const CounterState(0));
+  ColCounterCubit() : super(const CounterState(1));
 
   void increment() => emit(CounterState(state.count + 1));
   void decrement()
   {
-    if(state.count > 0)
+    if(state.count > 1)
     {
       emit(CounterState(state.count - 1));
     }
@@ -55,47 +55,6 @@ class SizedGridCubit extends Cubit<SizedGrid>{
 
   void changeRows(int count) => emit(SizedGrid(count, state.mColCnt));
   void changeCols(int count) => emit(SizedGrid(state.mRowCnt, count));
-}
-
-class SizedGridWidget extends StatelessWidget {
-  const SizedGridWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SizedGridCubit, SizedGrid>(
-      builder: (context, sizedGrid) {
-        // Fallback to 1 if the value is less than or equal to 0.
-        final int rows = sizedGrid.mRowCnt > 0 ? sizedGrid.mRowCnt : 1;
-        final int cols = sizedGrid.mColCnt > 0 ? sizedGrid.mColCnt : 1;
-        final int itemCount = rows * cols;
-
-        return GridView.builder(
-          padding: const EdgeInsets.all(8.0),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: cols,
-            mainAxisSpacing: 4.0,
-            crossAxisSpacing: 4.0,
-          ),
-          itemCount: itemCount,
-          itemBuilder: (context, index) {
-            return Container(
-              decoration: BoxDecoration(
-                color: Colors.blueAccent,
-                border: Border.all(color: Colors.black),
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: Center(
-                child: Text(
-                  '$index',
-                  style: const TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
 }
 
 void main() {
@@ -135,6 +94,17 @@ class MyHomePage extends StatelessWidget {
     context.read<SizedGridCubit>().changeRows(rowCount);
     context.read<SizedGridCubit>().changeCols(colCount);
 
+    List<Widget> gridRows = [];
+    for (int i = 0; i < rowCount; i++) {
+      List<Widget> rowCells = [];
+      for (int j = 0; j < colCount; j++) {
+        rowCells.add(
+          Icon(Icons.check_box_outline_blank, color: const Color.fromARGB(255, 193, 167, 165)), // Empty icon
+        );
+      }
+      gridRows.add(Row(mainAxisAlignment: MainAxisAlignment.center, children: rowCells));
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -144,30 +114,53 @@ class MyHomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: 
           [
-            Expanded(
-              child: const SizedGridWidget()
-            ),
-
+            Column(children: gridRows), // Grid of bottles
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    FloatingActionButton(
-                      onPressed: () => context.read<RowCounterCubit>().increment(),
-                      child: Text("Add a Row"),
+                  FloatingActionButton(
+                    onPressed: () => context.read<RowCounterCubit>().increment(),
+                    child: 
+                      Text("Add a Row",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Color.fromARGB(255, 30, 204, 186),
+                        ),
+                      ),
                     ),
                     FloatingActionButton(
                       onPressed: () => context.read<RowCounterCubit>().decrement(),
-                      child: Text("Remove a Row"),
+                      child: Text("Remove a Row",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Color.fromARGB(255, 30, 204, 186),
+                        ),
+                      ),
                     ),
-                                FloatingActionButton(
+                    FloatingActionButton(
                       onPressed: () => context.read<ColCounterCubit>().increment(),
-                      child: Text("Add a Column"),
+                      child: Text("Add a Column",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Color.fromARGB(255, 30, 204, 186),
+                        ),
+                      ),
                     ),
                     FloatingActionButton(
                       onPressed: () => context.read<ColCounterCubit>().decrement(),
-                      child: Text("Remove a Column"),
+                      child: Text("Remove a Column",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Color.fromARGB(255, 30, 204, 186),
+                        ),
+                      ),
                     ),
                   ],
                 )
