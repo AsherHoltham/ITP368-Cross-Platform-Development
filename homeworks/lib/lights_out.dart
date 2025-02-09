@@ -2,41 +2,27 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// ==========================
-/// 1. Define the Events
-/// ==========================
 abstract class LightsOutEvent {}
-
-/// Event to start a new game with a given number of lights.
 class StartGame extends LightsOutEvent {
   final int numLights;
   StartGame(this.numLights);
 }
-
-/// Event to toggle a light (and its neighbors) at the given index.
 class ToggleLight extends LightsOutEvent {
   final int index;
   ToggleLight(this.index);
 }
 
-/// ==========================
-/// 2. Define the State
-/// ==========================
 class LightsOutState {
   final List<bool> lights;
 
   LightsOutState({required this.lights});
 
-  /// The game is won when all lights are off.
   bool get gameWon => lights.isNotEmpty && lights.every((light) => light == false);
 }
 
-/// ==========================
-/// 3. Create the BLoC
-/// ==========================
 class LightsOutBloc extends Bloc<LightsOutEvent, LightsOutState> {
   LightsOutBloc() : super(LightsOutState(lights: [])) {
-    /// When the StartGame event is added, generate a list of random booleans.
+
     on<StartGame>((event, emit) {
       final random = Random();
       List<bool> lights =
@@ -44,22 +30,20 @@ class LightsOutBloc extends Bloc<LightsOutEvent, LightsOutState> {
       emit(LightsOutState(lights: lights));
     });
 
-    /// When a ToggleLight event is added, flip the selected light and its neighbors.
     on<ToggleLight>((event, emit) {
       if (state.lights.isEmpty) return; // No game running.
       List<bool> newLights = List.from(state.lights);
       int i = event.index;
-
-      // Toggle the tapped light.
-      if (i >= 0 && i < newLights.length) {
+      if (i >= 0 && i < newLights.length) 
+      {
         newLights[i] = !newLights[i];
       }
-      // Toggle the left neighbor if it exists.
-      if (i - 1 >= 0) {
+      if (i - 1 >= 0) 
+      {
         newLights[i - 1] = !newLights[i - 1];
       }
-      // Toggle the right neighbor if it exists.
-      if (i + 1 < newLights.length) {
+      if (i + 1 < newLights.length) 
+      {
         newLights[i + 1] = !newLights[i + 1];
       }
       emit(LightsOutState(lights: newLights));
@@ -67,14 +51,10 @@ class LightsOutBloc extends Bloc<LightsOutEvent, LightsOutState> {
   }
 }
 
-/// ==========================
-/// 4. Build the Application
-/// ==========================
 void main() {
   runApp(MyApp());
 }
 
-/// MyApp sets up the BLoC provider for the widget tree.
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -88,16 +68,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/// ==========================
-/// 5. Build the UI
-/// ==========================
 class LightsOutScreen extends StatefulWidget {
   @override
   _LightsOutScreenState createState() => _LightsOutScreenState();
 }
 
 class _LightsOutScreenState extends State<LightsOutScreen> {
-  // Controller to capture the number of lights input.
   final TextEditingController _controller = TextEditingController();
 
   @override
@@ -115,7 +91,6 @@ class _LightsOutScreenState extends State<LightsOutScreen> {
       body: BlocBuilder<LightsOutBloc, LightsOutState>(
         builder: (context, state) 
         {
-          // If no game is running (empty lights list), show the input form.
           if (state.lights.isEmpty) 
           {
             return Padding(
@@ -147,7 +122,6 @@ class _LightsOutScreenState extends State<LightsOutScreen> {
           } 
           else 
           {
-            // A game is in progress; show the board and (if applicable) a win message.
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -159,7 +133,6 @@ class _LightsOutScreenState extends State<LightsOutScreen> {
                       style: TextStyle(fontSize: 24, color: Colors.green[700]),
                     ),
                   ),
-                // Display the row of lights.
                 Expanded(
                   child: Center(
                     child: Row(
@@ -186,7 +159,6 @@ class _LightsOutScreenState extends State<LightsOutScreen> {
                     ),
                   ),
                 ),
-                // A Reset button to start a new game with the same number of lights.
                 ElevatedButton(
                   onPressed: () {
                     context
