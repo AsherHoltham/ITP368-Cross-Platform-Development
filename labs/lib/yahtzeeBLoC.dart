@@ -35,7 +35,7 @@ void main()
 
 class Yahtzee extends StatelessWidget
 {
-  Yahtzee({super.key});
+  const Yahtzee({super.key});
 
   @override
   Widget build( BuildContext context )
@@ -52,6 +52,8 @@ class Yahtzee extends StatelessWidget
 class YahtzeeHome extends StatelessWidget
 {
   List<Dice> theDice = [Dice(0),Dice(1),Dice(2),Dice(3),Dice(4), ];
+
+  YahtzeeHome({super.key});
   @override
   Widget build( BuildContext context )
   { return Scaffold
@@ -98,9 +100,10 @@ class DiceCubit extends Cubit<DiceState>
 // debugging: and a 'roll' button
 class Dice extends StatelessWidget
 { final int id;
-  Dice(this.id);
+  Dice(this.id, {super.key});
 
   late Dice1 d1;
+  @override
   Widget build( BuildContext context )
   { return BlocProvider<DiceCubit>
     ( create: (cotext) => DiceCubit(),
@@ -114,10 +117,11 @@ class Dice extends StatelessWidget
 
 class Dice1 extends StatelessWidget
 { final int id;
-  Dice1(this.id);
+  Dice1(this.id, {super.key});
 
   static final randy = Random();
   late BuildContext bc;
+  @override
   Widget build( BuildContext context )
   { bc = context;
     List<Dot> dots = [];
@@ -189,7 +193,7 @@ class Dice1 extends StatelessWidget
 // named in the constructor call.
 class Dot extends Positioned
 {
-  Dot(  {super.top, super.left } )
+  Dot(  {super.key, super.top, super.left } )
   : super
     ( child: Container
       ( height: 10, width: 10,

@@ -59,7 +59,7 @@ class BoggleHome extends StatefulWidget
 {
   final List<String> letters; // these are given in constructor
 
-  BoggleHome( this.letters );
+  const BoggleHome( this.letters, {super.key} );
 
   @override
   State<BoggleHome> createState() => BoggleHomeState( letters );
@@ -88,6 +88,7 @@ class BoggleHomeState extends State<BoggleHome>
   // add it to the Scaffold.  
   Column faces = Column(children:<Row>[]);
 
+  @override
   Widget build( BuildContext context )
   { // print("BoggleHomeState.build ... starting ...");
     int i=0;
@@ -143,8 +144,9 @@ class FaceUp extends StatefulWidget
                        // so that a single letter can add itself to the word.
   FaceUpState? fus;
 
-  FaceUp( this.show, {required this.bhs} );
+  FaceUp( this.show, {super.key, required this.bhs} );
 
+  @override
   State<FaceUp> createState() => (fus=FaceUpState(show, bhs:bhs));
 }
 

@@ -26,8 +26,9 @@ ValueNotifier<Coordinate> set(){
 
 class RobotHome extends StatefulWidget{
   ValueNotifier<Coordinate> mCoordinates;
-  RobotHome(this.mCoordinates);
+  RobotHome(this.mCoordinates, {super.key});
 
+  @override
   State<RobotHome> createState() => RobotHomeState(mCoordinates);
 }
 
@@ -45,6 +46,7 @@ class RobotHomeState extends State<RobotHome>{
     rowButtonKeys = List.generate(5, (_) => GlobalKey<BtnState>());
   }
 
+  @override
   Widget build(BuildContext context) {
     List<Widget> gridRows = [];
     for(int i = 0; i < 5; i++){
@@ -97,12 +99,13 @@ class Tile extends StatefulWidget{
   Coordinate tileCoords;
   bool onTile;
 
-  Tile(coords, {required this.rhs}): tileCoords = coords, onTile = false{
+  Tile(coords, {super.key, required this.rhs}): tileCoords = coords, onTile = false{
     if(tileCoords.mX == rhs.mCoordinates.value.mX && tileCoords.mY == rhs.mCoordinates.value.mY){
       onTile = true;
     }
   }
 
+  @override
   TileState createState() => TileState();
 }
 
@@ -150,7 +153,7 @@ class Btn extends StatefulWidget {
   final RobotHomeState rhs;
   final GlobalKey<BtnState> btnKey;
 
-  Btn({
+  const Btn({
     required this.mType,
     required this.rhs,
     required this.btnKey,

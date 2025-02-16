@@ -31,7 +31,7 @@ List<List<bool>> retList = List.generate(
 class MachineHome extends StatefulWidget{
   List<List<bool>> bottles;
 
-  MachineHome( this.bottles );
+  MachineHome( this.bottles, {super.key} );
 
   @override
   State<MachineHome> createState() => MachineHomeState( bottles );
@@ -148,7 +148,7 @@ class Btn extends StatefulWidget {
   final MachineHomeState mhs;
   final GlobalKey<BtnState> btnKey;
 
-  Btn({
+  const Btn({
     required this.mType,
     required this.mState,
     required this.mhs,

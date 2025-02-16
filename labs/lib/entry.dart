@@ -13,7 +13,7 @@ void main()
 // demo of a simple page
 class Converter extends StatelessWidget
 {
-  Converter({super.key});
+  const Converter({super.key});
 
   @override
   Widget build(BuildContext context)
@@ -26,6 +26,8 @@ class Converter extends StatelessWidget
 
 class ConveterHome extends StatefulWidget
 {
+  const ConveterHome({super.key});
+
   @override
   State<ConveterHome> createState() => ConveterHomeState();
 }
