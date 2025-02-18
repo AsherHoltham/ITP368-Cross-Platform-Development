@@ -7,6 +7,28 @@
 // Goal: use HydratedCubit (or HydratedBloc) to have
 // persistent game state.
 
+/*
+lab
+Hydrate Chess
+
+You are given a chess board.  It is not a finished interface,
+but you can see where all of the pieces are, and you can move
+them (click on piece to move, then click where you want to move
+it).  
+
+The goal of this lab is to hydrate the game state, but which
+we mean ... make it so that if you stop the game program and
+then re-start it, the game resumes where you left off.  It
+does not reset to a new game.  
+
+I hope we are getting the repo business to work by now, because
+I really do not want to have to load the 5 (or more?) associated
+files from each of you to run your programs.  
+
+However, leave me a note on BrightSpace where the assignment is,
+so that I have some place to give you feedback.   
+*/
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
