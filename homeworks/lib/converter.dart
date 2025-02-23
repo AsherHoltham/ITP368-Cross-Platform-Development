@@ -55,7 +55,7 @@ class OperationPressed extends ConversionEvent {
 
 /// The state of the conversion calculator.
 class ConversionState {
-  final String input;  // The user-entered number as a string.
+  final String input; // The user-entered number as a string.
   final String output; // The converted result as a string.
 
   ConversionState({required this.input, required this.output});
@@ -187,29 +187,29 @@ class ConversionScreen extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    context.read<ConversionBloc>().add(
-                        OperationPressed(conversionType: ConversionType.fahrenheitToCelsius));
+                    context.read<ConversionBloc>().add(OperationPressed(
+                        conversionType: ConversionType.fahrenheitToCelsius));
                   },
                   child: Text("F → C"),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    context.read<ConversionBloc>().add(
-                        OperationPressed(conversionType: ConversionType.celsiusToFahrenheit));
+                    context.read<ConversionBloc>().add(OperationPressed(
+                        conversionType: ConversionType.celsiusToFahrenheit));
                   },
                   child: Text("C → F"),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    context.read<ConversionBloc>().add(
-                        OperationPressed(conversionType: ConversionType.poundsToKilograms));
+                    context.read<ConversionBloc>().add(OperationPressed(
+                        conversionType: ConversionType.poundsToKilograms));
                   },
                   child: Text("lb → kg"),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    context.read<ConversionBloc>().add(
-                        OperationPressed(conversionType: ConversionType.kilogramsToPounds));
+                    context.read<ConversionBloc>().add(OperationPressed(
+                        conversionType: ConversionType.kilogramsToPounds));
                   },
                   child: Text("kg → lb"),
                 ),
