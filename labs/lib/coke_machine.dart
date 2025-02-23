@@ -1,40 +1,43 @@
 // Asher Holtham
 import "package:flutter/material.dart";
 
-void main(){ 
-  runApp(Machine()); 
+void main() {
+  runApp(Machine());
 }
 
 // This does ONE board of letters.
 class Machine extends StatelessWidget {
-  List<List<bool>> bottles = [ ]; // 25 bottles in the machine
+  List<List<bool>> bottles = []; // 25 bottles in the machine
 
-  Machine({ super.key }) : bottles = fill(); // note: shake()
+  Machine({super.key}) : bottles = fill(); // note: shake()
 
   @override
-  Widget build(BuildContext context){ 
-    return MaterialApp( title: "Coke Machine", home: MachineHome(bottles),);
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: "Coke Machine",
+      home: MachineHome(bottles),
+    );
   }
 }
 
-List<List<bool>> fill(){
-List<List<bool>> retList = List.generate(
-  5, // Number of rows
-  (_) => List.generate(
-    5, // Number of columns
-    (_) => true, // Default value
-  ),
-);
+List<List<bool>> fill() {
+  List<List<bool>> retList = List.generate(
+    5, // Number of rows
+    (_) => List.generate(
+      5, // Number of columns
+      (_) => true, // Default value
+    ),
+  );
   return retList;
 }
 
-class MachineHome extends StatefulWidget{
+class MachineHome extends StatefulWidget {
   List<List<bool>> bottles;
 
-  MachineHome( this.bottles, {super.key} );
+  MachineHome(this.bottles, {super.key});
 
   @override
-  State<MachineHome> createState() => MachineHomeState( bottles );
+  State<MachineHome> createState() => MachineHomeState(bottles);
 }
 
 class MachineHomeState extends State<MachineHome> {
@@ -63,10 +66,12 @@ class MachineHomeState extends State<MachineHome> {
         rowCells.add(
           bottles[i][j]
               ? Icon(Icons.check_box, color: Colors.green) // Full icon
-              : Icon(Icons.check_box_outline_blank, color: Colors.red), // Empty icon
+              : Icon(Icons.check_box_outline_blank,
+                  color: Colors.red), // Empty icon
         );
       }
-      gridRows.add(Row(mainAxisAlignment: MainAxisAlignment.center, children: rowCells));
+      gridRows.add(
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: rowCells));
     }
 
     // Build row buttons
@@ -99,8 +104,12 @@ class MachineHomeState extends State<MachineHome> {
       body: Column(
         children: [
           Column(children: gridRows), // Grid of bottles
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: rowButtons),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: colButtons),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: rowButtons),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: colButtons),
           FloatingActionButton(
             onPressed: () {
               setState(() {
@@ -182,12 +191,11 @@ class BtnState extends State<Btn> {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: toggleState,
-      child: Text(
-        mType,
-        style: TextStyle(
-          fontSize: 15, 
-          color: mState? Color(0xff000000): Color(0xff00ff00),
-        )),
-      );
+      child: Text(mType,
+          style: TextStyle(
+            fontSize: 15,
+            color: mState ? Color(0xff000000) : Color(0xff00ff00),
+          )),
+    );
   }
 }
